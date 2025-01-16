@@ -5,6 +5,7 @@ from listings.choices import price_choices, bedroom_choices, state_choices
 from listings.models import Listing
 from realtors.models import Realtor
 
+
 def index(request):
     listings = Listing.objects.order_by('-list_date').filter(is_published=True)[:3]
 
@@ -31,3 +32,16 @@ def about(request):
     }
 
     return render(request, 'pages/about.html', context)
+def home(request):
+    # Fetch listings from the database
+    listings = Listing.objects.all()
+    
+    # Fetch upcoming open houses or events from the database
+    open_houses = OpenHouseEvent.objects.filter(date__gte=datetime.now()).order_by('date')
+    
+    context = {
+        'listings': listings,
+        'open_houses': open_houses,
+    }
+    
+    return render(request, 'pages/index.html', context)

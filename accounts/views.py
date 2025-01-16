@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages, auth
-from django.contrib.auth.models import User
-from contacts.models import Contact
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login  # Import login as auth_login
+from django.urls import reverse_lazy
+from django.contrib import auth
+
+
 
 def register(request):
   if request.method == 'POST':
@@ -38,24 +41,21 @@ def register(request):
       return redirect('register')
   else:
     return render(request, 'accounts/register.html')
-
 def login(request):
-  if request.method == 'POST':
-    username = request.POST['username']
-    password = request.POST['password']
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            auth_login(request, user)  # Correct usage: pass both 'request' and 'user'
+            # Redirect to the Django admin page after successful login
+            return redirect(reverse_lazy('admin:index'))  # This will take the user to the Django admin interface
+        else:
+            messages.error(request, 'Invalid username or password')
+            return redirect('login')  # Redirect back to login page if authentication fails
 
-    user = auth.authenticate(username=username, password=password)
-
-    if user is not None:
-      auth.login(request, user)
-      messages.success(request, 'You are now logged in')
-      return redirect('dashboard')
-    else:
-      messages.error(request, 'Invalid credentials')
-      return redirect('login')
-  else:
     return render(request, 'accounts/login.html')
-
 def logout(request):
   if request.method == 'POST':
     auth.logout(request)

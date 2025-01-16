@@ -6,7 +6,7 @@
 
 {% block content %}
 <!-- Showcase -->
-<section id="showcase">
+<section id="showcase" aria-label="Property search section">
     <div class="container text-center">
       <div class="home-search p-5">
         <div class="overlay p-5">
@@ -16,21 +16,21 @@
           <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae quas, asperiores eveniet vel nostrum magnam
             voluptatum tempore! Consectetur, id commodi!</p>
           <div class="search">
-            <form action="{% url 'search' %}">
+            <form action="{% url 'search' %}" method="get" role="search">
               <!-- Form Row 1 -->
               <div class="form-row">
                 <div class="col-md-4 mb-3">
-                  <label class="sr-only">Keywords</label>
+                  <label for="keywords" class="sr-only">Keywords</label>
                   <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)">
                 </div>
 
                 <div class="col-md-4 mb-3">
-                  <label class="sr-only">City</label>
+                  <label for="city" class="sr-only">City</label>
                   <input type="text" name="city" class="form-control" placeholder="City">
                 </div>
 
                 <div class="col-md-4 mb-3">
-                  <label class="sr-only">State</label>
+                  <label for="state" class="sr-only">State</label>
                   <select name="state" class="form-control">
                     <option selected="true" disabled="disabled">State (All)</option>
                     {% for key,value in state_choices.items %}
@@ -42,7 +42,7 @@
               <!-- Form Row 2 -->
               <div class="form-row">
                 <div class="col-md-6 mb-3">
-                  <label class="sr-only">Bedrooms</label>
+                  <label for="bedrooms" class="sr-only">Bedrooms</label>
                   <select name="bedrooms" class="form-control">
                     <option selected="true" disabled="disabled">Bedrooms (All)</option>
                     {% for key,value in bedroom_choices.items %}
@@ -65,13 +65,14 @@
         </div>
       </div>
     </div>
-  </section>
-<br>
-  <!-- Alerts -->
-  {% include 'partials/_alerts.html' %}
+</section>
 
-  <!-- Listings -->
-  <section id="listings" class="py-5">
+<br>
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+
+<!-- Listings -->
+<section id="listings" class="py-5">
     <div class="container">
       <h3 class="text-center mb-3">Latest Listings</h3>
       <div class="row">
@@ -80,7 +81,7 @@
             <!-- Listing 1 -->
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card listing-preview">
-                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="">
+                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="{{ listing.title }} image">
                 <div class="card-img-overlay">
                   <h2>
                     <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
@@ -122,39 +123,68 @@
           {% endfor %}
         {% else %}
           <div class="col-md-12">
-            <p>No Listings Available</p>
+            <p>No Listings Available. Please check back later or contact us for more information.</p>
           </div>
         {% endif %}
-
       </div>
     </div>
-  </section>
+</section>
 
-  <section id="services" class="py-5 bg-secondary text-white">
-    <div class="container">
-      <div class="row text-center">
-        <div class="col-md-4">
-          <i class="fas fa-comment fa-4x mr-4"></i>
-          <hr>
-          <h3>Consulting Services</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-            hic dignissimos ratione ea quae.</p>
+<!-- Open Houses & Events Section -->
+<section id="open-houses-events" class="py-5 bg-light">
+  <div class="container">
+    <h3 class="text-center mb-3">Upcoming Open Houses & Events</h3>
+    <div class="row">
+      {% if open_houses %}
+        {% for event in open_houses %}
+          <!-- Open House / Event 1 -->
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ event.title }}</h4>
+                <p class="card-text">{{ event.description }}</p>
+                <p><strong>Date & Time:</strong> {{ event.date }} at {{ event.time }}</p>
+                <p><strong>Location:</strong> {{ event.location }}</p>
+                <a href="{{ event.details_url }}" class="btn btn-info">More Info</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-md-12">
+          <p>No upcoming open houses or events at the moment. Please check back later!</p>
         </div>
-        <div class="col-md-4">
-          <i class="fas fa-home fa-4x mr-4"></i>
-          <hr>
-          <h3>Propery Management</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-            hic dignissimos ratione ea quae.</p>
-        </div>
-        <div class="col-md-4">
-          <i class="fas fa-suitcase fa-4x mr-4"></i>
-          <hr>
-          <h3>Renting & Selling</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-            hic dignissimos ratione ea quae.</p>
-        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-5 bg-secondary text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="fas fa-comment fa-4x mr-4"></i>
+        <hr>
+        <h3>Consulting Services</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
+          hic dignissimos ratione ea quae.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-home fa-4x mr-4"></i>
+        <hr>
+        <h3>Property Management</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
+          hic dignissimos ratione ea quae.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-suitcase fa-4x mr-4"></i>
+        <hr>
+        <h3>Renting & Selling</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
+          hic dignissimos ratione ea quae.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 {% endblock %}

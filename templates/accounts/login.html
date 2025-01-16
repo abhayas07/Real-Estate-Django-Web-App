@@ -8,15 +8,20 @@
       <div class="row">
         <div class="col-md-6 mx-auto">
           <div class="card">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
               <h4>
-                <i class="fas fa-sign-in-alt"></i> Login</h4>
+                <i class="fas fa-sign-in-alt"></i> Login
+              </h4>
+              <!-- Home page icon added here -->
+              <a href="{% url 'index' %}" class="text-white">
+                <i class="fas fa-home fa-lg"></i> <!-- Font Awesome home icon -->
+              </a>
             </div>
             <div class="card-body">
               <!-- Alerts -->
               {% include 'partials/_alerts.html' %}
-                <form action="{% url 'login' %}" method="POST">
-                  {% csrf_token %}
+              <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
                 <div class="form-group">
                   <label for="username">Username</label>
                   <input type="text" name="username" class="form-control" required>
@@ -34,5 +39,5 @@
         </div>
       </div>
     </div>
-  </section>
-  {% endblock %}
+</section>
+{% endblock %}
