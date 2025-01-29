@@ -3,43 +3,26 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login  # Import login as auth_login
 from django.urls import reverse_lazy
 from django.contrib import auth
-
-
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from .models import Contact  # Import the Contact model
 
 def register(request):
-  if request.method == 'POST':
-    # Get form values
-    first_name = request.POST['first_name']
-    last_name = request.POST['last_name']
-    username = request.POST['username']
-    email = request.POST['email']
-    password = request.POST['password']
-    password2 = request.POST['password2']
-
-    # Check if passwords match
-    if password == password2:
-      # Check username
-      if User.objects.filter(username=username).exists():
-        messages.error(request, 'That username is taken')
-        return redirect('register')
-      else:
-        if User.objects.filter(email=email).exists():
-          messages.error(request, 'That email is being used')
-          return redirect('register')
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Check if the username already exists
+        if User.objects.filter(username=username).exists():
+            # Handle the error (e.g., show a message that the username is taken)
+            pass
         else:
-          # Looks good
-          user = User.objects.create_user(username=username, password=password,email=email, first_name=first_name, last_name=last_name)
-          # Login after register
-          # auth.login(request, user)
-          # messages.success(request, 'You are now logged in')
-          # return redirect('index')
-          user.save()
-          messages.success(request, 'You are now registered and can log in')
-          return redirect('login')
-    else:
-      messages.error(request, 'Passwords do not match')
-      return redirect('register')
-  else:
+            # Create the user
+            user = User.objects.create_user(username=username, password=password)
+            # Log the user in correctly
+            login(request, user)  # Correct usage: pass request first, then user
+            return redirect('home')  # Redirect to home or another page
+    
     return render(request, 'accounts/register.html')
 def login(request):
     if request.method == 'POST':
@@ -63,9 +46,8 @@ def logout(request):
     return redirect('index')
 
 def dashboard(request):
-  user_contacts = Contact.objects.order_by('-contact_date').filter(user_id=request.user.id)
-
-  context = {
-    'contacts': user_contacts
-  }
-  return render(request, 'accounts/dashboard.html', context)
+    if request.user.is_authenticated:
+        # Retrieve contacts for the logged-in user, ordered by contact date
+        user_contacts = Contact.objects.order_by('-contact_date').filter(user_id=request.user.id)
+        return render(request, 'accounts/dashboard.html', {'contacts': user_contacts})
+    return redirect('login')  # Redirect to login page if the user is not authenticated
