@@ -2,6 +2,36 @@ from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  # Correct imports
 from .choices import price_choices, bedroom_choices, state_choices
 from .models import Listing
+from .models import Listing, Review  # Assuming you have a Review model
+from django.shortcuts import render, redirect
+from .models import Listing
+
+def listing_detail(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+    return render(request, 'listings/listing_detail.html', {'listing': listing})
+
+def add_review(request, listing_id):
+    # Fetch the listing or return a 404 error if it doesn't exist
+    listing = get_object_or_404(Listing, id=listing_id)
+    
+    if request.method == "POST":
+        # Get rating and comment from the POST request
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        # Create a new review
+        Review.objects.create(
+            listing=listing,
+            user=request.user,
+            rating=rating,
+            comment=comment
+        )
+        
+        # Redirect to the listing detail page
+        return redirect('listing_detail', listing_id=listing.id)
+
+    # If it's a GET request, render the add review form
+    return render(request, 'listings/add_review.html', {'listing': listing})
 
 def paginate_listings(request, queryset):
     """Helper function for pagination."""

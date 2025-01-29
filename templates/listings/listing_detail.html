@@ -1,0 +1,13 @@
+<!-- Listing details (in your listing_detail.html) -->
+<div class="reviews-section">
+    <h3>Reviews</h3>
+    {% for review in listing.reviews.all %}
+        <div class="review">
+            <p><strong>{{ review.user.username }}</strong> (Rating: {{ review.rating }})</p>
+            <p>{{ review.comment }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>No reviews yet. Be the first to leave a review!</p>
+    {% endfor %}
+</div>

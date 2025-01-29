@@ -19,7 +19,12 @@
   <!-- Lightbox -->
   <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 
+  <!-- Title Block -->
   <title>Real Estate {% block title %}{% endblock %}</title>
+
+  <!-- Extra CSS block to include page-specific styles -->
+  {% block extra_css %}
+  {% endblock %}
 </head>
 
 <body>

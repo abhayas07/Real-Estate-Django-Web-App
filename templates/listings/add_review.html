@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="review-container">
+    <h1 class="title">Add Review for {{ listing.title }}</h1>
+
+    <form method="POST" class="review-form">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="rating">Rating (1-5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required class="input-field">
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="comment" required class="input-field"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Review</button>
+    </form>
+  </div>
+
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Container styling */
+    .review-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .title {
+      text-align: center;
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 0.5s forwards; /* Slight delay for title */
+    }
+
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .input-field {
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 1s 1s forwards; /* Fade-in for inputs */
+    }
+
+    .input-field:focus {
+      border-color: #6c63ff;
+      transform: scale(1.05); /* Slight zoom effect on focus */
+    }
+
+    .submit-btn {
+      padding: 12px 20px;
+      background-color: #6c63ff;
+      color: #fff;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards; /* Delay for button fade-in */
+    }
+
+    .submit-btn:hover {
+      background-color: #5748d1;
+      transform: scale(1.05); /* Slight zoom effect on hover */
+    }
+
+    /* Animation for fade-in effect */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+{% endblock %}
