@@ -1,13 +1,115 @@
-<!-- Listing details (in your listing_detail.html) -->
-<div class="reviews-section">
-    <h3>Reviews</h3>
-    {% for review in listing.reviews.all %}
-        <div class="review">
-            <p><strong>{{ review.user.username }}</strong> (Rating: {{ review.rating }})</p>
-            <p>{{ review.comment }}</p>
-            <hr>
-        </div>
-    {% empty %}
-        <p>No reviews yet. Be the first to leave a review!</p>
-    {% endfor %}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews Page</title>
+    <style>
+        /* Style for the home button */
+        .home-button {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-home {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background-color: #45a049;
+        }
+
+        /* Reviews Section Styling */
+        .reviews-section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .reviews-section h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .review {
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .review p {
+            margin: 5px 0;
+        }
+
+        .review strong {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .review hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+        }
+
+        /* Animation for review entries */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-review {
+            animation: slideIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Button -->
+    <div class="home-button">
+        <a href="/listings" >Go to Home</a>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+        <h3>Reviews</h3>
+        {% for review in listing.reviews.all %}
+            <div class="review animate-review">
+                <p><strong>{{ review.user.username }}</strong> (Rating: {{ review.rating }})</p>
+                <p>{{ review.comment }}</p>
+                <hr>
+            </div>
+        {% empty %}
+            <p>No reviews yet. Be the first to leave a review!</p>
+        {% endfor %}
+    </div>
+
+    <!-- Optional: Smooth Scroll to Top on Home Button Click -->
+    <script>
+        document.querySelector('.btn-home').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default link behavior
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+</body>
+</html>
