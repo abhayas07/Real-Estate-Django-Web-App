@@ -14,14 +14,15 @@ def register(request):
         
         # Check if the username already exists
         if User.objects.filter(username=username).exists():
-            # Handle the error (e.g., show a message that the username is taken)
-            pass
+            # Show error message if username is taken
+            messages.error(request, "Username is already taken. Please choose another.")
+            return redirect('register')  # Redirect back to registration page
         else:
             # Create the user
             user = User.objects.create_user(username=username, password=password)
             # Log the user in correctly
-            login(request, user)  # Correct usage: pass request first, then user
-            return redirect('home')  # Redirect to home or another page
+            login(request, user)
+            return redirect('dashboard')  # Redirect to the dashboard after successful registration
     
     return render(request, 'accounts/register.html')
 def login(request):
@@ -33,7 +34,7 @@ def login(request):
         if user is not None:
             auth_login(request, user)  # Correct usage: pass both 'request' and 'user'
             # Redirect to the Django admin page after successful login
-            return redirect(reverse_lazy('admin:index'))  # This will take the user to the Django admin interface
+            return redirect(reverse_lazy('dashboard'))  # This will take the user to the Django admin interface
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login')  # Redirect back to login page if authentication fails
