@@ -18,7 +18,7 @@ def realtor_login(request):
     else:
         form = RealtorLoginForm()
     
-    return render(request, 'realtor/realtor_login.html', {'form': form})
+    return render(request, 'realtors/realtor_login.html', {'form': form})
 
 # Realtor Register View
 def realtor_register(request):
@@ -26,8 +26,8 @@ def realtor_register(request):
         form = RealtorRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('realtor-login')  # Redirect to login after successful registration
+            return redirect('realtor_login')  # Redirect to login after successful registration
     else:
         form = RealtorRegisterForm()
     
-    return render(request, 'realtor/realtor_register.html', {'form': form})
+    return render(request, 'realtors/realtor_register.html', {'form': form})
