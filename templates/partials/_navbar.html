@@ -1,11 +1,12 @@
 {% load static %}
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top" id="main-navbar">
     <div class="container">
         <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'img/logo.png' %}" class="logo" alt="Logo">
+            <img src="{% static 'img/logo.png' %}" class="logo" alt="Real Estate logo">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -25,36 +26,42 @@
                 {% if user.is_authenticated %}
                     <li class="nav-item {% if 'dashboard' in request.path %}active{% endif %} mr-3">
                         <a class="nav-link" href="{% url 'dashboard' %}">
-                            Welcome {{ user.username }} (Dashboard)
+                            <i class="fas fa-user-circle"></i> {{ user.username }}
                         </a>
                     </li>
-                    <li class="nav-item mr-3">
-                        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                    {% if user.is_staff %}
+                    <li class="nav-item {% if 'admin-panel' in request.path %}active{% endif %} mr-3">
+                        <a class="nav-link" href="{% url 'admin_panel' %}">
+                            <i class="fas fa-user-shield"></i> Admin
                         </a>
-                        <form action="{% url 'logout' %}" method="POST" id="logout">
+                    </li>
+                    {% endif %}
+                    <li class="nav-item mr-2">
+                        <form action="{% url 'logout' %}" method="POST" class="form-logout">
                             {% csrf_token %}
-                            <input type="hidden">
+                            <button type="submit" class="btn btn-outline-light btn-sm mt-1">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
                         </form>
                     </li>
                 {% else %}
-                    <li class="nav-item {% if 'register' in request.path %}active{% endif %} mr-3">
+                    <li class="nav-item {% if 'register' in request.path and 'realtor' not in request.path %}active{% endif %} mr-3">
                         <a class="nav-link" href="{% url 'register' %}">
-                            <i class="fas fa-user-plus"></i> User Register
+                            <i class="fas fa-user-plus"></i> Register
                         </a>
                     </li>
-                    <li class="nav-item {% if 'login' in request.path %}active{% endif %} mr-3">
+                    <li class="nav-item {% if 'login' in request.path and 'realtor' not in request.path %}active{% endif %} mr-3">
                         <a class="nav-link" href="{% url 'login' %}">
-                            <i class="fas fa-sign-in-alt"></i> User Login
+                            <i class="fas fa-sign-in-alt"></i> Login
                         </a>
                     </li>
                 {% endif %}
             </ul>
 
             <!-- Realtor Links (Login & Register) -->
-            <div class="navbar-nav ml-4">
-                <a href="{% url 'realtor_login' %}" class="btn btn-primary btn-lg mr-2">Realtor Login</a>
-                <a href="{% url 'realtor_register' %}" class="btn btn-secondary btn-lg">Realtor Register</a>
+            <div class="navbar-nav flex-row ml-lg-4 mt-2 mt-lg-0">
+                <a href="{% url 'realtor_login' %}" class="btn btn-outline-light btn-sm mr-2">Realtor Login</a>
+                <a href="{% url 'realtor_register' %}" class="btn btn-light btn-sm">Realtor Register</a>
             </div>
         </div>
     </div>

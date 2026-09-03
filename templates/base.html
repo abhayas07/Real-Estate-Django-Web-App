@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   <!-- Font Awesome -->
@@ -13,11 +13,11 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
   <!-- Lightbox -->
   <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
   <!-- Title Block -->
   <title>Real Estate {% block title %}{% endblock %}</title>
@@ -34,11 +34,21 @@
   <!-- NavBar -->
   {% include 'partials/_navbar.html' %}
 
+  <!-- Flash messages (site-wide) -->
+  {% include 'partials/_alerts.html' %}
+
   <!-- Main Content -->
-  {% block content %}{% endblock %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
   <!-- Footer -->
   {% include 'partials/_footer.html' %}
+
+  <!-- Back To Top -->
+  <button id="back-to-top" type="button" aria-label="Back to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
   <!-- Scripts -->
   <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from listings.choices import price_choices, bedroom_choices, state_choices
 
 from listings.models import Listing
@@ -32,16 +31,3 @@ def about(request):
     }
 
     return render(request, 'pages/about.html', context)
-def home(request):
-    # Fetch listings from the database
-    listings = Listing.objects.all()
-    
-    # Fetch upcoming open houses or events from the database
-    open_houses = OpenHouseEvent.objects.filter(date__gte=datetime.now()).order_by('date')
-    
-    context = {
-        'listings': listings,
-        'open_houses': open_houses,
-    }
-    
-    return render(request, 'pages/index.html', context)

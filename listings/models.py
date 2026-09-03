@@ -39,3 +39,18 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.listing.title} by {self.user.username}"
+
+
+class CsvImport(models.Model):
+    """Audit record for CSV bulk imports of listings."""
+    file = models.FileField(upload_to='csv_uploads/%Y/%m/%d/')
+    original_filename = models.CharField(max_length=255)
+    rows_created = models.IntegerField(default=0)
+    rows_updated = models.IntegerField(default=0)
+    rows_failed = models.IntegerField(default=0)
+    errors = models.TextField(blank=True)
+    uploaded_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.original_filename

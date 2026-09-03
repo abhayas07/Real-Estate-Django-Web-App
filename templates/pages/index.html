@@ -44,7 +44,7 @@
                 <div class="col-md-6 mb-3">
                   <label for="bedrooms" class="sr-only">Bedrooms</label>
                   <select name="bedrooms" class="form-control">
-                    <option selected="true" disabled="disabled">Bedrooms (All)</option>
+                    <option selected="true" disabled="disabled">Bedrooms (Min)</option>
                     {% for key,value in bedroom_choices.items %}
                       <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
@@ -59,7 +59,9 @@
                   </select>
                 </div>
               </div>
-              <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+              <button class="btn btn-secondary btn-block mt-4 btn-search" type="submit">
+                <i class="fas fa-search mr-2"></i>Search Properties
+              </button>
             </form>
           </div>
         </div>
@@ -67,14 +69,11 @@
     </div>
 </section>
 
-<br>
-<!-- Alerts -->
-{% include 'partials/_alerts.html' %}
-
 <!-- Listings -->
 <section id="listings" class="py-5">
     <div class="container">
       <h3 class="text-center mb-3">Latest Listings</h3>
+      <p class="text-center text-muted mb-4">Fresh properties added by our trusted realtors</p>
       <div class="row">
         {% if listings %}
           {% for listing in listings %}
@@ -123,66 +122,36 @@
           {% endfor %}
         {% else %}
           <div class="col-md-12">
-            <p>No Listings Available. Please check back later or contact us for more information.</p>
+            <div class="empty-state text-center py-5">
+              <i class="fas fa-home empty-state-icon"></i>
+              <h4>No Listings Available</h4>
+              <p class="text-muted">Please check back later or contact us for more information.</p>
+              <a href="{% url 'search' %}" class="btn btn-primary mt-2"><i class="fas fa-search mr-2"></i>Search Properties</a>
+            </div>
           </div>
         {% endif %}
       </div>
     </div>
 </section>
 
-<!-- Open Houses & Events Section -->
-<section id="open-houses-events" class="py-5 bg-light">
-  <div class="container">
-    <h3 class="text-center mb-3">Upcoming Open Houses & Events</h3>
-    <div class="row">
-      {% if open_houses %}
-        {% for event in open_houses %}
-          <!-- Open House / Event 1 -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">{{ event.title }}</h4>
-                <p class="card-text">{{ event.description }}</p>
-                <p><strong>Date & Time:</strong> {{ event.date }} at {{ event.time }}</p>
-                <p><strong>Location:</strong> {{ event.location }}</p>
-                <a href="{{ event.details_url }}" class="btn btn-info">More Info</a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="col-md-12">
-          <p>No upcoming open houses or events at the moment. Please check back later!</p>
-        </div>
-      {% endif %}
-    </div>
-  </div>
-</section>
-
 <!-- Services Section -->
-<section id="services" class="py-5 bg-secondary text-white">
+<section id="services" class="py-5 text-white">
   <div class="container">
     <div class="row text-center">
-      <div class="col-md-4">
-        <i class="fas fa-comment fa-4x mr-4"></i>
-        <hr>
-        <h3>Consulting Services</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-          hic dignissimos ratione ea quae.</p>
+      <div class="col-md-4 mb-5 mb-md-0">
+        <div class="service-icon mx-auto"><i class="fas fa-comment"></i></div>
+        <h3 class="h5 font-weight-bold mt-3">Consulting Services</h3>
+        <p class="service-text">Expert advice tailored to your goals — from first-time buying to smart investments, we guide you at every step.</p>
+      </div>
+      <div class="col-md-4 mb-5 mb-md-0">
+        <div class="service-icon mx-auto"><i class="fas fa-home"></i></div>
+        <h3 class="h5 font-weight-bold mt-3">Property Management</h3>
+        <p class="service-text">Hands-off ownership. We handle tenants, maintenance and payments while your property keeps earning.</p>
       </div>
       <div class="col-md-4">
-        <i class="fas fa-home fa-4x mr-4"></i>
-        <hr>
-        <h3>Property Management</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-          hic dignissimos ratione ea quae.</p>
-      </div>
-      <div class="col-md-4">
-        <i class="fas fa-suitcase fa-4x mr-4"></i>
-        <hr>
-        <h3>Renting & Selling</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae, provident iste consequatur
-          hic dignissimos ratione ea quae.</p>
+        <div class="service-icon mx-auto"><i class="fas fa-suitcase"></i></div>
+        <h3 class="h5 font-weight-bold mt-3">Renting & Selling</h3>
+        <p class="service-text">Get the best value for your property with our market expertise, professional marketing and negotiation skills.</p>
       </div>
     </div>
   </div>

@@ -1,52 +1,420 @@
 {% extends 'base.html' %}
-
 {% block title %} | Register Account {% endblock %}
-
 {% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  #register {
+    min-height: 70vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #register::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  #register::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    bottom: -50px;
+    left: -50px;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(30px); }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .register-container {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 10;
+    animation: slideInUp 0.8s ease-out;
+  }
+
+  .register-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: slideInDown 0.6s ease-out;
+  }
+
+  .register-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .register-header p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    border: none;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none;
+    padding: 30px 25px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -50px;
+    right: -50px;
+  }
+
+  .card-header h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-header i {
+    font-size: 28px;
+    animation: slideInDown 0.8s ease-out 0.2s both;
+  }
+
+  .card-body {
+    padding: 40px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+    animation: slideInUp 0.6s ease-out both;
+  }
+
+  .form-group:nth-child(1) { animation-delay: 0.1s; }
+  .form-group:nth-child(2) { animation-delay: 0.2s; }
+  .form-group:nth-child(3) { animation-delay: 0.3s; }
+  .form-group:nth-child(4) { animation-delay: 0.4s; }
+  .form-group:nth-child(5) { animation-delay: 0.5s; }
+  .form-group:nth-child(6) { animation-delay: 0.6s; }
+
+  .form-group label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .form-control::placeholder {
+    color: #999;
+  }
+
+  .form-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group-row .form-group {
+    margin-bottom: 0;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+    animation: slideInUp 0.6s ease-out 0.7s both;
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(-1px);
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.4s ease;
+    z-index: 1;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .btn-block {
+    display: block;
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #666;
+    animation: slideInUp 0.6s ease-out 0.8s both;
+  }
+
+  .login-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .login-link a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+  }
+
+  .login-link a:hover {
+    color: #764ba2;
+  }
+
+  .login-link a:hover::after {
+    width: 100%;
+  }
+
+  /* Alert styles */
+  .alert {
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    animation: slideInDown 0.4s ease-out;
+  }
+
+  .alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+  }
+
+  .alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+  }
+
+  .alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+  }
+
+  .alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+  }
+
+  @media (max-width: 600px) {
+    .register-header h1 {
+      font-size: 32px;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    .form-group-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    #register::before {
+      width: 200px;
+      height: 200px;
+    }
+
+    #register::after {
+      width: 150px;
+      height: 150px;
+    }
+  }
+</style>
+
 <section id="register" class="bg-light py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <div class="card">
-            <div class="card-header bg-primary text-white">
-              <h4>
-                <i class="fas fa-user-plus"></i> Register</h4>
+  <div class="register-container">
+    <div class="register-header">
+      <h1>Create Account</h1>
+      <p>Join our community today</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4>
+          <i class="fas fa-user-plus"></i> Register
+        </h4>
+      </div>
+
+      <div class="card-body">
+        <form action="{% url 'register' %}" method="POST">
+          {% csrf_token %}
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="first_name">First Name</label>
+              <input type="text" name="first_name" class="form-control" placeholder="John" required>
             </div>
-            <div class="card-body">
-              <!-- Alerts -->
-              {% include 'partials/_alerts.html' %}
-              <form action="{% url 'register' %}" method="POST">
-                  {% csrf_token %}
-                  <div class="form-group">
-                      <label for="first_name">First Name</label>
-                      <input type="text" name="first_name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="last_name">Last Name</label>
-                      <input type="text" name="last_name" class="form-control" required>
-                    </div>
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" name="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label for="password2">Password</label>
-                  <input type="password" name="password" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label for="password">Confirm Password</label>
-                  <input type="password" name="password2" class="form-control" required>
-                </div>
-                <input type="submit" value="Register" class="btn btn-secondary btn-block">
-              </form>
+            <div class="form-group">
+              <label for="last_name">Last Name</label>
+              <input type="text" name="last_name" class="form-control" placeholder="Doe" required>
             </div>
           </div>
+
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" placeholder="johndoe123" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter a strong password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input type="password" name="password2" class="form-control" placeholder="Confirm your password" required>
+          </div>
+
+          <button type="submit" class="btn btn-secondary btn-block">Register Now</button>
+        </form>
+
+        <div class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Sign in here</a>
         </div>
       </div>
     </div>
-  </section>
-  {% endblock %}
+  </div>
+</section>
+
+{% endblock %}

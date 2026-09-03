@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+
+{% block title %} | Admin Panel {% endblock %}
+
+{% block content %}
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-4"><i class="fas fa-user-shield"></i> Admin Panel</h1>
+        <p class="lead">Manage listings, realtors and CSV imports — right from the website</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a></li>
+        <li class="breadcrumb-item active">Admin Panel</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<style>
+  .admin-stat-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(16, 40, 78, 0.08);
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.25s ease;
+    height: 100%;
+  }
+  .admin-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(16, 40, 78, 0.14);
+  }
+  .admin-stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #10284e;
+  }
+  .admin-stat-card .stat-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+  }
+  .admin-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(16, 40, 78, 0.08);
+    overflow: hidden;
+  }
+  .admin-card .card-header {
+    background: #10284e;
+    color: #fff;
+    font-weight: 600;
+  }
+  .file-drop-label {
+    border: 2px dashed #c3cdd9;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: block;
+  }
+  .file-drop-label:hover {
+    border-color: #e8b23c;
+    background: #fdf6e5;
+    color: #10284e;
+  }
+  .import-summary-badge {
+    min-width: 42px;
+  }
+</style>
+
+<section id="admin-panel" class="py-5">
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="row mb-4">
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.listings }}</div>
+          <div class="stat-title">Listings</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.published }}</div>
+          <div class="stat-title">Published</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.realtors }}</div>
+          <div class="stat-title">Realtors</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.users }}</div>
+          <div class="stat-title">Users</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.reviews }}</div>
+          <div class="stat-title">Reviews</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2 mb-3">
+        <div class="admin-stat-card">
+          <div class="stat-value">{{ stats.imports }}</div>
+          <div class="stat-title">CSV Imports</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- CSV Upload -->
+      <div class="col-md-7 mb-4">
+        <div class="card admin-card shadow-sm h-100">
+          <div class="card-header">
+            <i class="fas fa-file-csv mr-2"></i>Import Listings from CSV
+          </div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <label class="file-drop-label" for="csv_files">
+                <i class="fas fa-cloud-upload-alt fa-2x mb-3 d-block"></i>
+                <strong>Choose one or more .csv files</strong>
+                <span class="d-block small mt-1">Hold Ctrl (or Cmd) to select multiple files</span>
+              </label>
+              <input type="file" name="csv_files" id="csv_files" class="d-none"
+                     accept=".csv,text/csv" multiple required>
+
+              <div class="form-group mt-3">
+                <label for="default_realtor">
+                  <i class="fas fa-user-tie mr-1"></i>Assign listings to realtor
+                  <small class="text-muted">(used when the CSV has no 'realtor' column)</small>
+                </label>
+                <select name="default_realtor" id="default_realtor" class="form-control">
+                  <option value="">— Auto: match the CSV 'realtor' column, otherwise the first realtor —</option>
+                  {% for realtor in realtors %}
+                    <option value="{{ realtor.id }}">{{ realtor.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-file-upload mr-2"></i>Upload &amp; Import
+              </button>
+              <a href="{% url 'sample_csv' %}" class="btn btn-outline-secondary btn-block mt-2">
+                <i class="fas fa-download mr-2"></i>Download Sample CSV Template
+              </a>
+            </form>
+
+            <hr>
+            <p class="small text-muted mb-0">
+              <i class="fas fa-info-circle mr-1"></i>
+              Required columns: <code>title</code>, <code>price</code>. Optional:
+              <code>address</code>, <code>city</code>, <code>state</code>, <code>zipcode</code>,
+              <code>bedrooms</code>, <code>bathrooms</code>, <code>garage</code>,
+              <code>sqft</code>, <code>lot_size</code>, <code>description</code>,
+              <code>realtor</code>, <code>is_published</code>.
+              Rows with the same title + zipcode are updated instead of duplicated.
+              New listings get a placeholder photo until you upload real ones.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-5 mb-4">
+        <div class="card admin-card shadow-sm h-100">
+          <div class="card-header"><i class="fas fa-bolt mr-2"></i>Quick Actions</div>
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush">
+              <a href="/admin/" class="list-group-item list-group-item-action">
+                <i class="fas fa-cog text-primary mr-2"></i>Full Django Admin Site
+                <i class="fas fa-external-link-alt float-right small text-muted mt-1"></i>
+              </a>
+              <a href="/admin/listings/listing/" class="list-group-item list-group-item-action">
+                <i class="fas fa-home text-primary mr-2"></i>Manage Listings
+                <i class="fas fa-external-link-alt float-right small text-muted mt-1"></i>
+              </a>
+              <a href="{% url 'listings' %}" class="list-group-item list-group-item-action">
+                <i class="fas fa-list text-primary mr-2"></i>View Public Listings
+                <i class="fas fa-external-link-alt float-right small text-muted mt-1"></i>
+              </a>
+              <a href="{% url 'about' %}" class="list-group-item list-group-item-action">
+                <i class="fas fa-users text-primary mr-2"></i>View Realtors
+                <i class="fas fa-external-link-alt float-right small text-muted mt-1"></i>
+              </a>
+              <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action">
+                <i class="fas fa-user-circle text-primary mr-2"></i>My Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import log -->
+    <div class="card admin-card shadow-sm">
+      <div class="card-header"><i class="fas fa-history mr-2"></i>Recent CSV Imports</div>
+      <div class="card-body p-0">
+        {% if recent_imports %}
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th class="text-center">Created</th>
+                  <th class="text-center">Updated</th>
+                  <th class="text-center">Failed</th>
+                  <th>Uploaded By</th>
+                  <th>Date</th>
+                  <th>Errors</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for import in recent_imports %}
+                  <tr>
+                    <td>
+                      <a href="{{ import.file.url }}" target="_blank">
+                        <i class="fas fa-file-csv text-success mr-2"></i>{{ import.original_filename }}
+                      </a>
+                    </td>
+                    <td class="text-center"><span class="badge badge-success import-summary-badge">{{ import.rows_created }}</span></td>
+                    <td class="text-center"><span class="badge badge-info import-summary-badge">{{ import.rows_updated }}</span></td>
+                    <td class="text-center"><span class="badge {% if import.rows_failed %}badge-danger{% else %}badge-secondary{% endif %} import-summary-badge">{{ import.rows_failed }}</span></td>
+                    <td>{% if import.uploaded_by %}{{ import.uploaded_by.username }}{% else %}—{% endif %}</td>
+                    <td>{{ import.created_at|date:'M d, Y H:i' }}</td>
+                    <td>
+                      {% if import.errors %}
+                        <details>
+                          <summary class="text-danger" style="cursor:pointer;">View ({{ import.errors|truncatechars:40 }})</summary>
+                          <small class="text-muted">{{ import.errors|linebreaksbr }}</small>
+                        </details>
+                      {% else %}
+                        <span class="text-success">None</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-5">
+            <i class="fas fa-file-csv fa-3x text-muted mb-3"></i>
+            <p class="text-muted mb-0">No CSV files imported yet. Upload your first file above.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Show chosen file names in the drop label
+  (function () {
+    var input = document.getElementById('csv_files');
+    var label = document.querySelector('.file-drop-label');
+    if (input && label) {
+      input.addEventListener('change', function () {
+        var count = input.files.length;
+        var names = Array.prototype.map.call(input.files, function (f) { return f.name; }).join(', ');
+        label.querySelector('strong').textContent = count + ' file(s) selected';
+        label.querySelector('span').textContent = names;
+      });
+    }
+  })();
+</script>
+{% endblock %}

@@ -1,10 +1,524 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Realtor Login</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  #login-section {
+    min-height: 70vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #login-section::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  #login-section::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    bottom: -50px;
+    left: -50px;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(30px); }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 10;
+    animation: slideInUp 0.8s ease-out;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: slideInDown 0.6s ease-out;
+  }
+
+  .login-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .login-header p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .login-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: slideInDown 0.6s ease-out 0.1s both;
+  }
+
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    border: none;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none;
+    padding: 30px 25px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -50px;
+    right: -50px;
+  }
+
+  .card-header h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .card-header i {
+    font-size: 28px;
+    animation: slideInDown 0.8s ease-out 0.2s both;
+  }
+
+  .card-body {
+    padding: 40px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+    animation: slideInUp 0.6s ease-out both;
+  }
+
+  .form-group:nth-child(1) { animation-delay: 0.1s; }
+  .form-group:nth-child(2) { animation-delay: 0.2s; }
+  .form-group:nth-child(3) { animation-delay: 0.3s; }
+
+  .form-group label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .form-control::placeholder {
+    color: #999;
+  }
+
+  /* Custom styling for Django form fields */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 8px 0;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Remove default ul/li styling from Django form */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin: 24px 0;
+  }
+
+  li label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  li input,
+  li textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  li input:focus,
+  li textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+  }
+
+  li ul {
+    margin: 12px 0 0 0;
+  }
+
+  li ul li {
+    margin: 8px 0;
+  }
+
+  li ul li label {
+    display: inline;
+    margin-bottom: 0;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+    animation: slideInUp 0.6s ease-out 0.4s both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+
+  .btn-primary:active {
+    transform: translateY(-1px);
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.4s ease;
+    z-index: 1;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .forgot-link {
+    text-align: right;
+    margin-top: -15px;
+    margin-bottom: 20px;
+    animation: slideInUp 0.6s ease-out 0.25s both;
+  }
+
+  .forgot-link a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .forgot-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #666;
+    animation: slideInUp 0.6s ease-out 0.5s both;
+  }
+
+  .signup-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .signup-link a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+  }
+
+  .signup-link a:hover {
+    color: #764ba2;
+  }
+
+  .signup-link a:hover::after {
+    width: 100%;
+  }
+
+  /* Alert styles */
+  .alert {
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    padding: 15px;
+    animation: slideInDown 0.4s ease-out;
+  }
+
+  .alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+  }
+
+  .alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+  }
+
+  .alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+  }
+
+  .alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  .errorlist li {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin: 5px 0;
+    margin-bottom: 0;
+    border-left: 4px solid #dc3545;
+  }
+
+  @media (max-width: 600px) {
+    .login-header h1 {
+      font-size: 32px;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    #login-section::before {
+      width: 200px;
+      height: 200px;
+    }
+
+    #login-section::after {
+      width: 150px;
+      height: 150px;
+    }
+  }
+</style>
+
+<section id="login-section">
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-badge">🔐 Secure Access</div>
+      <h1>Welcome Back</h1>
+      <p>Sign in to your realtor account</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4>
+          <i class="fas fa-sign-in-alt"></i> Realtor Login
+        </h4>
+      </div>
+
+      <div class="card-body">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+          
+          {{ form.as_p }}
+
+        
+          <button type="submit" class="btn btn-primary">Login Now</button>
+        </form>
+
+      
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

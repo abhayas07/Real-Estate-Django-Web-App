@@ -1,10 +1,476 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Realtor Register</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Lora:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #1a472a;
+    --secondary: #c9a876;
+    --accent: #d4af37;
+    --light-bg: #f5f3f0;
+    --white: #ffffff;
+    --dark-text: #2c2c2c;
+    --light-text: #6b6b6b;
+    --border: #e8e4df;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--dark-text);
+    line-height: 1.6;
+  }
+
+  .realtor-register-wrapper {
+    background: linear-gradient(135deg, var(--light-bg) 0%, #ede8e3 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+  }
+
+  /* Decorative background elements */
+  .realtor-register-wrapper::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,118,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .realtor-register-wrapper::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(26,71,42,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .register-container {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 50px;
+    align-items: start;
+  }
+
+  /* Left side - Hero section */
+  .register-hero {
+    animation: fadeInLeft 0.8s ease-out;
+  }
+
+  .register-hero h1 {
+    font-family: 'Lora', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .register-hero .subtitle {
+    font-size: 16px;
+    color: var(--light-text);
+    margin-bottom: 32px;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .benefits-list {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+
+  .benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    font-size: 15px;
+    color: var(--dark-text);
+  }
+
+  .benefits-list li::before {
+    content: '✓';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: var(--secondary);
+    color: var(--white);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 14px;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  /* Right side - Form */
+  .register-form-wrapper {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    animation: fadeInRight 0.8s ease-out;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .register-form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .form-title {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .form-subtitle {
+    font-size: 13px;
+    color: var(--light-text);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+
+  .form-group {
+    margin-bottom: 22px;
+    animation: slideUp 0.5s ease-out backwards;
+  }
+
+  .form-group:nth-child(1) { animation-delay: 0.1s; }
+  .form-group:nth-child(2) { animation-delay: 0.15s; }
+  .form-group:nth-child(3) { animation-delay: 0.2s; }
+  .form-group:nth-child(4) { animation-delay: 0.25s; }
+  .form-group:nth-child(5) { animation-delay: 0.3s; }
+  .form-group:nth-child(6) { animation-delay: 0.35s; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--dark-text);
+    background: #fafaf8;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-control::placeholder {
+    color: #c8c4bf;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--secondary);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(201, 168, 118, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-row .form-group {
+    margin-bottom: 0;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(26, 71, 42, 0.2);
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.4s ease;
+    z-index: 1;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(26, 71, 42, 0.3);
+  }
+
+  .submit-btn:hover::before {
+    left: 100%;
+  }
+
+  .submit-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .form-footer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 13px;
+    color: var(--light-text);
+  }
+
+  .form-footer a {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .form-footer a:hover {
+    color: var(--primary);
+  }
+
+  /* Error & Success alerts */
+  .errorlist {
+    list-style: none;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fef0f0;
+    border-left: 4px solid #e74c3c;
+    border-radius: 6px;
+    color: #c0392b;
+    font-size: 13px;
+  }
+
+  .errorlist li {
+    margin-bottom: 6px;
+  }
+
+  .errorlist li:last-child {
+    margin-bottom: 0;
+  }
+
+  .helptext {
+    font-size: 12px;
+    color: var(--light-text);
+    margin-top: 6px;
+    display: block;
+  }
+
+  ul.helptext {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .register-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .register-hero h1 {
+      font-size: 36px;
+    }
+
+    .register-form-wrapper {
+      padding: 35px 28px;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .realtor-register-wrapper {
+      padding: 40px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .register-hero h1 {
+      font-size: 28px;
+    }
+
+    .register-form-wrapper {
+      padding: 25px 20px;
+    }
+
+    .form-title {
+      font-size: 22px;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Focus visible for accessibility */
+  .form-control:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
+</style>
+
+<div class="realtor-register-wrapper">
+  <div class="register-container">
+    
+    <!-- Left Side - Hero Content -->
+    <div class="register-hero">
+      <h1>Join Our Elite<br>Realtor Network</h1>
+      <p class="subtitle">
+        Grow your real estate business with our comprehensive platform. Connect with buyers and sellers, showcase your listings, and build your professional brand.
+      </p>
+
+      <ul class="benefits-list">
+        <li>Professional listing showcase</li>
+        <li>Advanced analytics & insights</li>
+        <li>Client management tools</li>
+        <li>Marketing & promotion suite</li>
+        <li>Verified agent credentials</li>
+        <li>24/7 dedicated support</li>
+      </ul>
+    </div>
+
+    <!-- Right Side - Registration Form -->
+    <div class="register-form-wrapper">
+      <h2 class="form-title">Register Now</h2>
+      <p class="form-subtitle">Complete your profile to get started</p>
+
+      <form method="POST" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="errorlist">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="submit-btn">Create Account</button>
+
+        <div class="form-footer">
+          Already a member? <a href="{% url 'realtor_login' %}">Sign in here</a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- Custom form styling override for Django form fields -->
+<style>
+  .realtor-register-wrapper p {
+    margin-bottom: 0;
+  }
+
+  .realtor-register-wrapper .form-group p {
+    margin-bottom: 22px;
+  }
+
+  .realtor-register-wrapper input,
+  .realtor-register-wrapper textarea,
+  .realtor-register-wrapper select {
+    max-width: 100%;
+  }
+</style>
+
 {% endblock %}

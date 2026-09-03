@@ -31,3 +31,5 @@ def realtor_register(request):
         form = RealtorRegisterForm()
     
     return render(request, 'realtors/realtor_register.html', {'form': form})
+def forgot_password_view(request):
+    return render(request, 'realtors/forgot_password.html')
