@@ -37,17 +37,21 @@ if not SECRET_KEY:
         )
 
 # Allowed Hosts configuration
-allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '')
-if allowed_hosts_env:
-    ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_env.split(',') if h.strip()]
-else:
-    # Default hosts for local development and testing
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'testserver']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
+    if host.strip()
+]
+# Safe fallback for local development/testing when ALLOWED_HOSTS is not provided
+if not ALLOWED_HOSTS and DEBUG:
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "testserver"]
 
 # CSRF Trusted Origins (required for Django 4+ behind reverse proxies / HTTPS)
-csrf_origins_env = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
-if csrf_origins_env:
-    CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_origins_env.split(',') if o.strip()]
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
 
 
 # ==============================================================================
