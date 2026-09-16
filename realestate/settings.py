@@ -36,23 +36,25 @@ if not SECRET_KEY:
             "Set SECRET_KEY in your production environment variables or .env file."
         )
 
-# Allowed Hosts configuration
+import os
+
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
+    for host in os.environ.get(
+        "ALLOWED_HOSTS",
+        "real-estate-django-web-app.onrender.com"
+    ).split(",")
     if host.strip()
 ]
-# Safe fallback for local development/testing when ALLOWED_HOSTS is not provided
-if not ALLOWED_HOSTS and DEBUG:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "testserver"]
 
-# CSRF Trusted Origins (required for Django 4+ behind reverse proxies / HTTPS)
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    for origin in os.environ.get(
+        "CSRF_TRUSTED_ORIGINS",
+        "https://real-estate-django-web-app.onrender.com"
+    ).split(",")
     if origin.strip()
 ]
-
 
 # ==============================================================================
 # Application Definition
