@@ -5,189 +5,238 @@
 {% block title %} | Search Results {% endblock %}
 
 {% block content %}
-<section id="showcase-inner" class="showcase-search text-white py-5">
+<section id="showcase-inner" class="showcase-search text-white py-4 py-md-5">
     <div class="container">
-      <div class="row text-center">
+      <div class="row text-center mb-3">
         <div class="col-md-12">
-          <form action="{% url 'search' %}">
-            <!-- Form Row 1 -->
-            <div class="form-row">
-              <div class="col-md-4 mb-3">
-                <label class="sr-only">Keywords</label>
-                <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)" value="{{ values.keywords }}">
-              </div>
+          <h1 class="display-4 mb-2">Search Properties</h1>
+          <p class="lead mb-0">Refine your criteria to discover perfectly matching homes</p>
+        </div>
+      </div>
 
-              <div class="col-md-4 mb-3">
-                <label class="sr-only">City</label>
-                <input type="text" name="city" class="form-control" placeholder="City" value="{{ values.city }}">
+      <div class="row justify-content-center">
+        <div class="col-xl-11 col-lg-12">
+          <!-- Centered Styled Floating Search Card Container -->
+          <div class="search-card-container text-left mx-auto">
+            <!-- Search Card Header -->
+            <div class="search-card-header d-flex align-items-center justify-content-between mb-3 pb-2">
+              <div class="d-flex align-items-center">
+                <div class="search-header-icon mr-2">
+                  <i class="fa-solid fa-sliders text-warning"></i>
+                </div>
+                <div>
+                  <h3 class="search-header-title mb-0">Refine Search Criteria</h3>
+                  <span class="search-header-subtitle small">Adjust parameters to narrow your property matches</span>
+                </div>
               </div>
+              <span class="search-filter-badge d-none d-sm-inline-block">
+                <i class="fa-solid fa-bolt text-warning mr-1"></i> Instant Update
+              </span>
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label class="sr-only">State</label>
-                <select name="state" class="form-control">
-                  <option selected="true" disabled="disabled">State (All)</option>
-                  {% for key,value in state_choices.items %}
-                      <option value="{{ key }}" 
-                      {% if key == values.state %}
-                        selected
-                      {% endif %}
-                      >{{ value }}</option>
+            <!-- Search Form: 3 columns on desktop, 1 column on mobile -->
+            <form action="{% url 'search' %}" method="get" role="search">
+              <div class="form-row">
+                <!-- Field 1: Keywords -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="keywords" class="search-input-label">
+                    <i class="fa-solid fa-magnifying-glass text-warning mr-1"></i> Keywords
+                  </label>
+                  <input type="text" id="keywords" name="keywords" class="form-control search-input" placeholder="Keywords (Pool, Garage...)" value="{{ values.keywords }}">
+                </div>
+
+                <!-- Field 2: City -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="city" class="search-input-label">
+                    <i class="fa-solid fa-city text-warning mr-1"></i> City
+                  </label>
+                  <input type="text" id="city" name="city" class="form-control search-input" placeholder="City" value="{{ values.city }}">
+                </div>
+
+                <!-- Field 3: State -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="state" class="search-input-label">
+                    <i class="fa-solid fa-location-dot text-warning mr-1"></i> State
+                  </label>
+                  <select id="state" name="state" class="form-control search-input">
+                    <option selected="true" disabled="disabled">All States</option>
+                    {% for key,value in state_choices.items %}
+                      <option value="{{ key }}" {% if key == values.state %}selected{% endif %}>{{ value }}</option>
                     {% endfor %}
-                </select>
-              </div>
-            </div>
-            <!-- Form Row 2 -->
-            <div class="form-row">
-              <div class="col-md-6 mb-3">
-                <label class="sr-only">Bedrooms</label>
-                <select name="bedrooms" class="form-control">
-                  <option selected="true" disabled="disabled">Bedrooms (Min)</option>
-                  {% for key,value in bedroom_choices.items %}
-                      <option value="{{ key }}"
-                      {% if key == values.bedrooms %}
-                        selected
-                      {% endif %}
-                      >{{ value }}</option>
+                  </select>
+                </div>
+
+                <!-- Field 4: Bedrooms -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                  <label for="bedrooms" class="search-input-label">
+                    <i class="fa-solid fa-bed text-warning mr-1"></i> Bedrooms
+                  </label>
+                  <select id="bedrooms" name="bedrooms" class="form-control search-input">
+                    <option selected="true" disabled="disabled">Bedrooms (Any)</option>
+                    {% for key,value in bedroom_choices.items %}
+                      <option value="{{ key }}" {% if key == values.bedrooms %}selected{% endif %}>{{ value }} Bedrooms</option>
                     {% endfor %}
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <select name="price" class="form-control">
-                  <option selected="true" disabled="disabled">Max Price (All)</option>
-                  {% for key,value in price_choices.items %}
-                      <option value="{{ key }}"
-                      {% if key == values.price %}
-                        selected
-                      {% endif %}
-                      >{{ value }}</option>
+                  </select>
+                </div>
+
+                <!-- Field 5: Max Price -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                  <label for="price" class="search-input-label">
+                    <i class="fa-solid fa-tag text-warning mr-1"></i> Max Price
+                  </label>
+                  <select id="price" name="price" class="form-control search-input">
+                    <option selected="true" disabled="disabled">Any Budget</option>
+                    {% for key,value in price_choices.items %}
+                      <option value="{{ key }}" {% if key == values.price %}selected{% endif %}>{{ value }}</option>
                     {% endfor %}
-                </select>
+                  </select>
+                </div>
+
+                <!-- Field 6: Submit Button -->
+                <div class="col-lg-4 col-md-6 col-12 d-flex flex-column justify-content-end">
+                  <label class="search-input-label d-none d-lg-block">&nbsp;</label>
+                  <button class="btn btn-search btn-block" type="submit">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i> Update Results
+                  </button>
+                </div>
               </div>
-            </div>
-            <button class="btn btn-secondary btn-block mt-4 btn-search" type="submit">
-              <i class="fas fa-search mr-2"></i>Search Properties
-            </button>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <!-- Breadcrumb -->
-  <section id="bc" class="mt-3">
-    <div class="container">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="{% url 'index' %}">
-              <i class="fas fa-home"></i> Home</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="{% url 'listings' %}">Browse Listings</a>
-          </li>
-          <li class="breadcrumb-item active"> Search Results</li>
-        </ol>
-      </nav>
-    </div>
-  </section>
+<!-- Breadcrumb -->
+<section id="bc">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'listings' %}">Browse Listings</a>
+        </li>
+        <li class="breadcrumb-item active">Search Results</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-  <!-- Listings -->
-  <section id="listings" class="py-4">
-    <div class="container">
-      <div class="row">
-        {% if listings %}
-          {% for listing in listings %}
+<!-- Listings Results -->
+<section id="listings" class="py-5">
+  <div class="container">
+    <div class="row">
+      {% if listings %}
+        {% for listing in listings %}
           <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">{{ listing.title }}</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}</p>
-                  </div>
-                  <hr>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-6">
-                      <i class="fas fa-th-large"></i> Sqft: {{ listing.sqft }}</div>
-                    <div class="col-6">
-                      <i class="fas fa-car"></i> Garage: {{ listing.garage }}</div>
-                  </div>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-6">
-                      <i class="fas fa-bed"></i> Bedrooms: {{ listing.bedrooms }}</div>
-                    <div class="col-6">
-                      <i class="fas fa-bath"></i> Bathrooms: {{ listing.bathrooms }}</div>
-                  </div>
-                  <hr>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-12">
-                      <i class="fas fa-user"></i> {{ listing.realtor }}</div>
-                  </div>
-                  <div class="row text-secondary pb-2">
-                    <div class="col-6">
-                      <i class="fas fa-clock"></i> {{ listing.list_date | timesince }}</div>
-                  </div>
-                  <hr>
-                  <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
+            <div class="card listing-preview">
+              <div class="card-img-wrapper">
+                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="{{ listing.title }}">
+                <div class="price-badge">
+                  <span class="badge-currency">₹</span>{{ listing.price | intcomma }}
                 </div>
               </div>
-            </div>
-          {% endfor %}
-        {% else %}
-          <div class="col-md-12">
-            <div class="empty-state text-center py-5">
-              <i class="fas fa-search empty-state-icon"></i>
-              <h4>No Listings Found</h4>
-              <p class="text-muted">No properties match your search. Try widening your criteria.</p>
-              <a href="{% url 'listings' %}" class="btn btn-primary mt-2"><i class="fas fa-list mr-2"></i>Browse All Listings</a>
+
+              <div class="card-body">
+                <div class="listing-heading">
+                  <h4 class="text-primary">{{ listing.title }}</h4>
+                  <div class="listing-location">
+                    <i class="fa-solid fa-location-dot"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}
+                  </div>
+                </div>
+
+                <!-- Amenity Grid -->
+                <div class="amenity-grid">
+                  <div class="amenity-item" title="Square Footage">
+                    <i class="fa-solid fa-ruler-combined"></i> {{ listing.sqft }} Sqft
+                  </div>
+                  <div class="amenity-item" title="Garage">
+                    <i class="fa-solid fa-warehouse"></i> {{ listing.garage }} Garage
+                  </div>
+                  <div class="amenity-item" title="Bedrooms">
+                    <i class="fa-solid fa-bed"></i> {{ listing.bedrooms }} Beds
+                  </div>
+                  <div class="amenity-item" title="Bathrooms">
+                    <i class="fa-solid fa-bath"></i> {{ listing.bathrooms }} Baths
+                  </div>
+                </div>
+
+                <div class="card-meta">
+                  <span title="Realtor">
+                    <i class="fa-solid fa-circle-user"></i> {{ listing.realtor }}
+                  </span>
+                  <span title="Listed Date">
+                    <i class="fa-regular fa-clock"></i> {{ listing.list_date | timesince }} ago
+                  </span>
+                </div>
+
+                <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">
+                  View Details <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+              </div>
             </div>
           </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-md-12">
+          <div class="empty-state text-center bg-white rounded shadow-sm">
+            <i class="fa-solid fa-magnifying-glass-chart empty-state-icon"></i>
+            <h4>No Matching Listings Found</h4>
+            <p class="text-muted">We couldn't find properties matching these specific filters. Try expanding your search location or budget range.</p>
+            <a href="{% url 'listings' %}" class="btn btn-primary mt-3">
+              <i class="fa-solid fa-list mr-2"></i> Browse All Available Listings
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="row">
+      <div class="col-md-12">
+        {% if listings.has_other_pages %}
+          <ul class="pagination justify-content-center mt-4 mb-0">
+            {% if listings.has_previous %}
+              <li class="page-item">
+                <a href="?page={{ listings.previous_page_number }}{% if params %}&{{ params }}{% endif %}" class="page-link" aria-label="Previous">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
+              </li>
+            {% endif %}
+
+            {% for i in listings.paginator.page_range %}
+              {% if listings.number == i %}
+                <li class="page-item active">
+                  <span class="page-link">{{ i }}</span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a href="?page={{ i }}{% if params %}&{{ params }}{% endif %}" class="page-link">{{ i }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if listings.has_next %}
+              <li class="page-item">
+                <a href="?page={{ listings.next_page_number }}{% if params %}&{{ params }}{% endif %}" class="page-link" aria-label="Next">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link"><i class="fa-solid fa-chevron-right"></i></span>
+              </li>
+            {% endif %}
+          </ul>
         {% endif %}
       </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          {% if listings.has_other_pages %}
-            <ul class="pagination justify-content-center mt-3 mb-0">
-              {% if listings.has_previous %}
-                <li class="page-item">
-                  <a href="?page={{ listings.previous_page_number }}{% if params %}&{{ params }}{% endif %}" class="page-link">&laquo;</a>
-                </li>
-              {% else %}
-                <li class="page-item disabled">
-                  <a class="page-link">&laquo;</a>
-                </li>
-              {% endif %}
-              {% for i in listings.paginator.page_range %}
-                {% if listings.number == i %}
-                  <li class="page-item active">
-                    <a class="page-link">{{ i }}</a>
-                  </li>
-                {% else %}
-                  <li class="page-item">
-                    <a href="?page={{ i }}{% if params %}&{{ params }}{% endif %}" class="page-link">{{ i }}</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-              {% if listings.has_next %}
-                <li class="page-item">
-                  <a href="?page={{ listings.next_page_number }}{% if params %}&{{ params }}{% endif %}" class="page-link">&raquo;</a>
-                </li>
-              {% else %}
-                <li class="page-item disabled">
-                  <a class="page-link">&raquo;</a>
-                </li>
-              {% endif %}
-            </ul>
-          {% endif %}
-        </div>
-      </div>
     </div>
-  </section>
-  {% endblock %}
+  </div>
+</section>
+{% endblock %}

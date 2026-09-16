@@ -1,32 +1,35 @@
-   <!-- Top Bar -->
-  <section id="top-bar" class="p-3">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <i class="fas fa-phone"></i> +91 1234567890
-        </div>
-        <div class="col-md-4">
-          <i class="fas fa-envelope-open"></i> contact@realestate.com
-        </div>
-        <div class="col-md-4">
-          <div class="social text-right">
-            <a href="#">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#">
-              <i class="fab fa-facebook"></i>
-            </a>
-            <a href="#">
-              <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="#">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#">
-              <i class="fab fa-pinterest"></i>
-            </a>
-          </div>
+{% load static %}
+<!-- Top Contact Bar -->
+<section id="top-bar">
+  <div class="container">
+    <div class="topbar-wrapper d-flex flex-column flex-md-row align-items-center justify-content-between">
+      <!-- Contact and Status Information -->
+      <div class="topbar-contact-group d-flex flex-wrap align-items-center justify-content-center justify-content-md-start">
+        <span class="live-indicator-badge my-1 mr-2 mr-md-3">
+          <span class="live-indicator-dot"></span> Available 24/7
+        </span>
+        <span class="topbar-divider d-none d-sm-inline-block"></span>
+        <span class="topbar-item my-1 mx-2 mx-md-3">
+          <i class="fa-solid fa-phone-volume text-warning mr-2"></i>
+          <a href="tel:+911234567890">+91 1234567890</a>
+        </span>
+        <span class="topbar-divider d-none d-sm-inline-block"></span>
+        <span class="topbar-item my-1 mx-2 mx-md-3">
+          <i class="fa-solid fa-envelope text-warning mr-2"></i>
+          <a href="mailto:contact@realestate.com">contact@realestate.com</a>
+        </span>
+      </div>
+
+      <!-- Social Media Links -->
+      <div class="topbar-right-group d-flex flex-wrap align-items-center justify-content-center justify-content-md-end mt-2 mt-md-0">
+        <div class="social d-flex align-items-center">
+          <a href="#" aria-label="Twitter / X" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Pinterest" title="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>

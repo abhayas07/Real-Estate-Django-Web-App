@@ -1,132 +1,529 @@
 {% extends 'base.html' %} 
 
-{% load humanize %}
+{% load humanize static %}
 
-{% block title %} | Welcome {% endblock %}
+{% block title %} | Premier Real Estate & Properties {% endblock %}
 
 {% block content %}
+
+<style>
+/* ===== Hero Section, Heading & Badge - High-Visibility & Animation ===== */
+#showcase {
+    position: relative;
+    z-index: 1;
+    padding: 75px 0 60px;
+    background-color: #091322 !important;
+    background-image: linear-gradient(180deg, rgba(7, 16, 31, 0.84) 0%, rgba(13, 27, 49, 0.80) 50%, rgba(7, 16, 31, 0.94) 100%), url('{% static "img/showcase.jpg" %}');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.showcase-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.72) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(245, 158, 11, 0.5) !important;
+    padding: 0.42rem 1.15rem;
+    border-radius: 9999px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #fef08a !important;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 16px rgba(245, 158, 11, 0.22);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    animation: heroBadgeEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.showcase-badge-pill i {
+    margin-right: 0.5rem;
+    color: #f59e0b;
+    animation: starPulse 2.2s ease-in-out infinite;
+}
+
+.hero-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 3.4rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.85rem !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 6px 20px rgba(0, 0, 0, 0.9), 0 14px 40px rgba(0, 0, 0, 0.85) !important;
+    animation: heroTitleEntrance 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+}
+
+.hero-highlight {
+    display: inline-block;
+    background: linear-gradient(135deg, #fff382 0%, #ffb703 35%, #fb8500 70%, #ff6b35 100%);
+    background-size: 250% 250%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95)) drop-shadow(0 6px 22px rgba(245, 158, 11, 0.5));
+    animation: goldShimmer 5s ease-in-out infinite alternate;
+    position: relative;
+}
+
+.hero-lead {
+    font-size: 1.2rem !important;
+    color: #f8fafc !important;
+    font-weight: 500 !important;
+    line-height: 1.62 !important;
+    max-width: 740px;
+    margin: 0 auto 1.85rem !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 4px 18px rgba(0, 0, 0, 0.9) !important;
+    animation: heroLeadEntrance 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.18s backwards;
+    will-change: transform, opacity;
+}
+
+/* Animations */
+@keyframes heroTitleEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+        filter: blur(4px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.008);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes heroLeadEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroBadgeEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.92);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes goldShimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes starPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px #f59e0b);
+    }
+    50% {
+        transform: scale(1.25);
+        filter: drop-shadow(0 0 10px #fbbf24);
+    }
+}
+
+/* ===== Property Search - Visibility & Styling Fix ===== */
+.search-card-container {
+    position: relative;
+    z-index: 10;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: min(1100px, 100%);
+    margin: 30px auto !important;
+    padding: 26px;
+    background: #ffffff !important;
+    color: #222 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
+    text-align: left;
+}
+
+.search-card-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.search-header-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff3cd;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.search-header-icon i {
+    font-size: 18px;
+}
+
+.search-header-title {
+    color: #212529 !important;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.search-header-subtitle {
+    color: #6c757d !important;
+}
+
+.search-filter-badge {
+    padding: 7px 12px;
+    background: #fff8e1;
+    color: #495057;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.search-input-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #343a40 !important;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.search-input {
+    display: block !important;
+    width: 100% !important;
+    min-height: 48px;
+    background: #ffffff !important;
+    color: #212529 !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 10px !important;
+    padding: 10px 14px;
+    box-shadow: none;
+    outline: none;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.search-input::placeholder {
+    color: #8a8f98 !important;
+    opacity: 1;
+}
+
+.search-input:focus {
+    border-color: #f0ad00 !important;
+    box-shadow: 0 0 0 3px rgba(240, 173, 0, 0.16) !important;
+}
+
+select.search-input {
+    cursor: pointer;
+}
+
+.btn-search {
+    min-height: 48px;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: #f0ad00 !important;
+    color: #fff !important;
+    font-weight: 700;
+    box-shadow: 0 7px 18px rgba(240, 173, 0, 0.28);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-search:hover,
+.btn-search:focus {
+    background: #d99c00 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(240, 173, 0, 0.34);
+}
+
+.search-card-container .form-row {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.search-card-container .form-row > [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+/* Make the form stay visible even if another stylesheet hides generic forms */
+.search-card-container form {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+@media (max-width: 991.98px) {
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+    .hero-lead {
+        font-size: 1.05rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #showcase {
+        padding: 45px 0 35px;
+    }
+
+    .hero-title {
+        font-size: 2.05rem !important;
+        line-height: 1.25 !important;
+    }
+
+    .hero-lead {
+        font-size: 0.98rem !important;
+        padding: 0 8px;
+    }
+
+    .showcase-badge-pill {
+        font-size: 0.76rem;
+        padding: 0.35rem 0.85rem;
+    }
+
+    .search-card-container {
+        padding: 18px;
+        margin-top: 22px !important;
+        border-radius: 14px;
+    }
+
+    .search-card-header {
+        align-items: flex-start !important;
+    }
+
+    .search-header-subtitle {
+        display: block;
+        line-height: 1.4;
+        margin-top: 3px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-title, .hero-lead, .showcase-badge-pill, .hero-highlight, .showcase-badge-pill i {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}
+</style>
+
 <!-- Showcase -->
 <section id="showcase" aria-label="Property search section">
     <div class="container text-center">
-      <div class="home-search p-5">
-        <div class="overlay p-5">
-          <h1 class="display-4 mb-4">
-            Property Searching Just Got So Easy
+      <div class="row justify-content-center">
+        <div class="col-xl-11 col-lg-12">
+          <h1 class="hero-title mb-2">
+            Find Your Dream Home <span class="hero-highlight">With Confidence</span>
           </h1>
-          <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae quas, asperiores eveniet vel nostrum magnam
-            voluptatum tempore! Consectetur, id commodi!</p>
-          <div class="search">
+          <p class="lead hero-lead mb-4">
+            Explore thousands of handpicked, verified residential and commercial properties backed by expert realtors.
+          </p>
+
+          <!-- Centered Styled Floating Search Card Container -->
+          <div class="search-card-container text-left mx-auto">
+            <!-- Search Card Header -->
+            <div class="search-card-header d-flex align-items-center justify-content-between mb-3 pb-2">
+              <div class="d-flex align-items-center">
+                <div class="search-header-icon mr-2">
+                  <i class="fa-solid fa-magnifying-glass text-warning"></i>
+                </div>
+                <div>
+                  <h3 class="search-header-title mb-0">Search Properties</h3>
+                  <span class="search-header-subtitle small">Find verified homes, apartments, and luxury villas</span>
+                </div>
+              </div>
+              <span class="search-filter-badge d-none d-sm-inline-block">
+                <i class="fa-solid fa-sliders text-warning mr-1"></i> Fast Filters
+              </span>
+            </div>
+
+            <!-- Search Form: 3 columns on desktop, 2 on tablet, 1 on mobile -->
             <form action="{% url 'search' %}" method="get" role="search">
-              <!-- Form Row 1 -->
-              <div class="form-row">
-                <div class="col-md-4 mb-3">
-                  <label for="keywords" class="sr-only">Keywords</label>
-                  <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)">
+              <div class="form-row align-items-end">
+                <!-- Field 1: Keywords -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="keywords" class="search-input-label">
+                    <i class="fa-solid fa-magnifying-glass text-warning mr-1"></i> Keywords
+                  </label>
+                  <input type="text" id="keywords" name="keywords" class="form-control search-input" placeholder="e.g. Pool, Garage, Villa">
                 </div>
 
-                <div class="col-md-4 mb-3">
-                  <label for="city" class="sr-only">City</label>
-                  <input type="text" name="city" class="form-control" placeholder="City">
+                <!-- Field 2: City -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="city" class="search-input-label">
+                    <i class="fa-solid fa-city text-warning mr-1"></i> City
+                  </label>
+                  <input type="text" id="city" name="city" class="form-control search-input" placeholder="e.g. Boston, Miami">
                 </div>
 
-                <div class="col-md-4 mb-3">
-                  <label for="state" class="sr-only">State</label>
-                  <select name="state" class="form-control">
-                    <option selected="true" disabled="disabled">State (All)</option>
+                <!-- Field 3: State -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                  <label for="state" class="search-input-label">
+                    <i class="fa-solid fa-location-dot text-warning mr-1"></i> State
+                  </label>
+                  <select id="state" name="state" class="form-control search-input">
+                    <option value="" selected>All States</option>
                     {% for key,value in state_choices.items %}
                       <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
                   </select>
                 </div>
-              </div>
-              <!-- Form Row 2 -->
-              <div class="form-row">
-                <div class="col-md-6 mb-3">
-                  <label for="bedrooms" class="sr-only">Bedrooms</label>
-                  <select name="bedrooms" class="form-control">
-                    <option selected="true" disabled="disabled">Bedrooms (Min)</option>
+
+                <!-- Field 4: Bedrooms -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                  <label for="bedrooms" class="search-input-label">
+                    <i class="fa-solid fa-bed text-warning mr-1"></i> Bedrooms
+                  </label>
+                  <select id="bedrooms" name="bedrooms" class="form-control search-input">
+                    <option value="" selected>Bedrooms (Any)</option>
                     {% for key,value in bedroom_choices.items %}
-                      <option value="{{ key }}">{{ value }}</option>
+                      <option value="{{ key }}">{{ value }} Bedrooms</option>
                     {% endfor %}
                   </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <select name="price" class="form-control" id="type">
-                    <option selected="true" disabled="disabled">Max Price (Any)</option>
+
+                <!-- Field 5: Max Price -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                  <label for="price" class="search-input-label">
+                    <i class="fa-solid fa-tag text-warning mr-1"></i> Max Price
+                  </label>
+                  <select id="price" name="price" class="form-control search-input">
+                    <option value="" selected>Any Budget</option>
                     {% for key,value in price_choices.items %}
                       <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
                   </select>
                 </div>
+
+                <!-- Field 6: Submit Button -->
+                <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                  <label class="search-input-label d-none d-md-block" aria-hidden="true">&nbsp;</label>
+                  <button class="btn btn-search btn-block" type="submit">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i> Search Properties
+                  </button>
+                </div>
               </div>
-              <button class="btn btn-secondary btn-block mt-4 btn-search" type="submit">
-                <i class="fas fa-search mr-2"></i>Search Properties
-              </button>
             </form>
           </div>
+
+          <!-- Hero Trust Badges -->
+          <div class="hero-trust-row">
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>100% Verified Properties</span>
+            </div>
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Licensed Realtors</span>
+            </div>
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-handshake"></i>
+              <span>Direct Inquiries & Deals</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
 </section>
 
-<!-- Listings -->
+<!-- Latest Listings Section -->
 <section id="listings" class="py-5">
     <div class="container">
-      <h3 class="text-center mb-3">Latest Listings</h3>
-      <p class="text-center text-muted mb-4">Fresh properties added by our trusted realtors</p>
+      <div class="text-center mb-5">
+        <h2 class="h1 mb-2">Latest Featured Listings</h2>
+        <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Discover prime residential, urban luxury, and suburban homes freshly listed by our verified realtors.</p>
+      </div>
+
       <div class="row">
         {% if listings %}
           {% for listing in listings %}
-            <!-- Listing 1 -->
+            <!-- Listing Card -->
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card listing-preview">
-                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="{{ listing.title }} image">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
-                  </h2>
+                <div class="card-img-wrapper">
+                  {% if listing.photo_main %}
+                    <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="{{ listing.title }} property image" loading="lazy">
+                  {% else %}
+                    <img class="card-img-top" src="{% static 'img/showcase.jpg' %}" alt="{{ listing.title }} property image" loading="lazy">
+                  {% endif %}
+                  <div class="price-badge">
+                    <span class="badge-currency">₹</span>{{ listing.price | intcomma }}
+                  </div>
                 </div>
+
                 <div class="card-body">
-                  <div class="listing-heading text-center">
+                  <div class="listing-heading">
                     <h4 class="text-primary">{{ listing.title }}</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}</p>
+                    <div class="listing-location">
+                      <i class="fa-solid fa-location-dot"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}
+                    </div>
                   </div>
-                  <hr>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-6">
-                      <i class="fas fa-th-large"></i> Sqft: {{ listing.sqft }}</div>
-                    <div class="col-6">
-                      <i class="fas fa-car"></i> Garage: {{ listing.garage }}</div>
+
+                  <!-- Amenity Grid -->
+                  <div class="amenity-grid">
+                    <div class="amenity-item" title="Square Feet">
+                      <i class="fa-solid fa-ruler-combined"></i> {{ listing.sqft }} Sqft
+                    </div>
+                    <div class="amenity-item" title="Garage Capacity">
+                      <i class="fa-solid fa-warehouse"></i> {{ listing.garage }} Garage
+                    </div>
+                    <div class="amenity-item" title="Bedrooms">
+                      <i class="fa-solid fa-bed"></i> {{ listing.bedrooms }} Beds
+                    </div>
+                    <div class="amenity-item" title="Bathrooms">
+                      <i class="fa-solid fa-bath"></i> {{ listing.bathrooms }} Baths
+                    </div>
                   </div>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-6">
-                      <i class="fas fa-bed"></i> Bedrooms: {{ listing.bedrooms }}</div>
-                    <div class="col-6">
-                      <i class="fas fa-bath"></i> Bathrooms: {{ listing.bathrooms }}</div>
+
+                  <div class="card-meta">
+                    <span title="Listing Realtor">
+                      <i class="fa-solid fa-circle-user"></i> {{ listing.realtor }}
+                    </span>
+                    <span title="Listed Date">
+                      <i class="fa-regular fa-clock"></i> {{ listing.list_date | timesince }} ago
+                    </span>
                   </div>
-                  <hr>
-                  <div class="row py-2 text-secondary">
-                    <div class="col-6">
-                      <i class="fas fa-user"></i> {{ listing.realtor }}</div>
-                  </div>
-                  <div class="row text-secondary pb-2">
-                    <div class="col-6">
-                      <i class="fas fa-clock"></i> {{ listing.list_date | timesince }}</div>
-                  </div>
-                  <hr>
-                  <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
+
+                  <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">
+                    View Details <i class="fa-solid fa-arrow-right ml-2"></i>
+                  </a>
                 </div>
               </div>
             </div>
           {% endfor %}
         {% else %}
-          <div class="col-md-12">
-            <div class="empty-state text-center py-5">
-              <i class="fas fa-home empty-state-icon"></i>
-              <h4>No Listings Available</h4>
-              <p class="text-muted">Please check back later or contact us for more information.</p>
-              <a href="{% url 'search' %}" class="btn btn-primary mt-2"><i class="fas fa-search mr-2"></i>Search Properties</a>
+          <div class="col-12">
+            <div class="empty-state text-center bg-white rounded shadow-sm">
+              <i class="fa-solid fa-house-circle-xmark empty-state-icon"></i>
+              <h4>No Properties Currently Available</h4>
+              <p class="text-muted">Check back soon or submit a search criteria to find matching homes.</p>
+              <a href="{% url 'search' %}" class="btn btn-primary mt-3">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i> Search All Listings
+              </a>
             </div>
           </div>
         {% endif %}
@@ -135,23 +532,43 @@
 </section>
 
 <!-- Services Section -->
-<section id="services" class="py-5 text-white">
+<section id="services" class="text-white">
   <div class="container">
-    <div class="row text-center">
-      <div class="col-md-4 mb-5 mb-md-0">
-        <div class="service-icon mx-auto"><i class="fas fa-comment"></i></div>
-        <h3 class="h5 font-weight-bold mt-3">Consulting Services</h3>
-        <p class="service-text">Expert advice tailored to your goals — from first-time buying to smart investments, we guide you at every step.</p>
+    <div class="text-center mb-5">
+      <span class="badge px-3 py-2 font-weight-bold" style="background: rgba(255, 255, 255, 0.12); color: var(--accent); border-radius: 9999px;">
+        Why Choose Us
+      </span>
+      <h2 class="h1 text-white mt-2 mb-2">Full-Spectrum Real Estate Services</h2>
+      <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto;">Providing seasoned counsel, seamless transactions, and dedicated property administration.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0">
+        <div class="service-box">
+          <div class="service-icon-wrap">
+            <i class="fa-solid fa-handshake-angle"></i>
+          </div>
+          <h3 class="service-title">Consulting Services</h3>
+          <p class="service-desc">Tailored investment roadmaps and personalized guidance for first-time buyers, seasoned portfolio owners, and commercial investors.</p>
+        </div>
       </div>
-      <div class="col-md-4 mb-5 mb-md-0">
-        <div class="service-icon mx-auto"><i class="fas fa-home"></i></div>
-        <h3 class="h5 font-weight-bold mt-3">Property Management</h3>
-        <p class="service-text">Hands-off ownership. We handle tenants, maintenance and payments while your property keeps earning.</p>
+      <div class="col-md-4 mb-4 mb-md-0">
+        <div class="service-box">
+          <div class="service-icon-wrap">
+            <i class="fa-solid fa-house-laptop"></i>
+          </div>
+          <h3 class="service-title">Property Management</h3>
+          <p class="service-desc">Complete peace of mind. We oversee tenant vetting, rent collections, inspections, and preventative maintenance around the clock.</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <div class="service-icon mx-auto"><i class="fas fa-suitcase"></i></div>
-        <h3 class="h5 font-weight-bold mt-3">Renting & Selling</h3>
-        <p class="service-text">Get the best value for your property with our market expertise, professional marketing and negotiation skills.</p>
+      <div class="col-md-4 mb-4 mb-md-0">
+        <div class="service-box">
+          <div class="service-icon-wrap">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <h3 class="service-title">Renting & Selling</h3>
+          <p class="service-desc">High-impact marketing, immersive photography, and strategic negotiations that maximize yields and close deals swiftly.</p>
+        </div>
       </div>
     </div>
   </div>

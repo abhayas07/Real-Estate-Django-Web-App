@@ -3,35 +3,61 @@
 {% block title %} | Account Login {% endblock %}
 
 {% block content %}
-<section id="login" class="bg-light py-5">
+<section id="login" class="auth-page-wrap">
+    <div class="auth-ambient-orb-1"></div>
+    <div class="auth-ambient-orb-2"></div>
+
     <div class="container">
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <div class="card">
-            <div class="card-header bg-primary text-white d-flex justify-content-between">
-              <h4>
-                <i class="fas fa-sign-in-alt"></i> Login
-              </h4>
-              <!-- Home page icon added here -->
-              <a href="{% url 'index' %}" class="text-white">
-                <i class="fas fa-home fa-lg"></i> <!-- Font Awesome home icon -->
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+          <div class="modern-auth-card">
+            <div class="auth-card-header">
+              <div class="auth-icon-badge">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+              </div>
+              <h2 class="h3 font-weight-bold text-primary mb-1">Welcome Back</h2>
+              <p class="text-muted small mb-0">Sign in to track your saved properties & inquiries</p>
+            </div>
+
+            <form action="{% url 'login' %}" method="POST">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                <label for="username" class="font-weight-bold small text-muted text-uppercase">Username</label>
+                <div class="auth-input-wrap mb-0">
+                  <i class="fa-solid fa-circle-user auth-icon"></i>
+                  <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required autofocus>
+                </div>
+              </div>
+
+              <div class="form-group mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="password" class="font-weight-bold small text-muted text-uppercase mb-0">Password</label>
+                </div>
+                <div class="auth-input-wrap mb-0">
+                  <i class="fa-solid fa-lock auth-icon"></i>
+                  <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+                  <button type="button" class="auth-password-toggle" data-target="password" aria-label="Toggle password visibility">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block py-3 font-weight-bold mb-3 shadow-md">
+                <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Log In
+              </button>
+            </form>
+
+            <div class="text-center pt-3 border-top mt-3">
+              <span class="text-muted small">Don't have an account yet?</span>
+              <a href="{% url 'register' %}" class="font-weight-bold small text-primary ml-1">
+                Register Here <i class="fa-solid fa-arrow-right ml-1"></i>
               </a>
             </div>
-            <div class="card-body">
-              <form action="{% url 'login' %}" method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" name="username" class="form-control" required>
-                </div>
 
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" name="password" id="password" class="form-control" required>
-                </div>
-
-                <input type="submit" value="Login" class="btn btn-secondary btn-block">
-              </form>
+            <div class="text-center mt-3">
+              <a href="{% url 'realtor_login' %}" class="small text-muted">
+                <i class="fa-solid fa-briefcase text-warning mr-1"></i> Realtor Portal Sign In
+              </a>
             </div>
           </div>
         </div>

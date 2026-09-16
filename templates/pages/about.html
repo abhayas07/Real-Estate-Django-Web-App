@@ -2,99 +2,168 @@
 
 {% load static %}
 
-{% block title %} | About Us {% endblock %}
+{% block title %} | About Our Agency {% endblock %}
 
 {% block content %}
 <section id="showcase-inner" class="py-5 text-white">
     <div class="container">
       <div class="row text-center">
         <div class="col-md-12">
-          <h1 class="display-4">About Real Estate</h1>
-          <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt, pariatur!</p>
+          <h1 class="display-4">About Our Agency</h1>
+          <p class="lead">Connecting discerning buyers, sellers, and investors with exceptional real estate</p>
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <!-- Breadcrumb -->
-  <section id="bc" class="mt-3">
-    <div class="container">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="{% url 'index' %}">
-              <i class="fas fa-home"></i> Home</a>
-          </li>
-          <li class="breadcrumb-item active"> About</li>
-        </ol>
-      </nav>
-    </div>
-  </section>
+<!-- Breadcrumb -->
+<section id="bc">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+        </li>
+        <li class="breadcrumb-item active">About Us</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-  <section id="about" class="py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <h2>We Search For The Perfect Home</h2>
-          <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt, pariatur!</p>
-          <img src="{% static 'img/about.jpg' %}" alt="">
-          <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis esse officia repudiandae ad saepe ex, amet
-            neque quod accusamus rem quia magnam magni dolorum facilis ullam minima perferendis? Exercitationem at quaerat
-            commodi id libero eveniet harum perferendis laborum molestias quia.</p>
+<!-- About Section -->
+<section id="about" class="py-5">
+  <div class="container">
+    <div class="row align-items-center mb-5">
+      <div class="col-lg-7 col-md-12 mb-4 mb-lg-0">
+        <span class="badge badge-warning text-uppercase px-3 py-2 font-weight-bold mb-2" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border-radius: 9999px;">
+          Our Mission & Legacy
+        </span>
+        <h2 class="h1 mt-2 mb-3">We Discover & Deliver The Perfect Home For Every Lifestyle</h2>
+        <p class="lead text-primary font-weight-normal mb-3">With decades of collective market mastery, our brokerage transforms real estate searches into effortless accomplishments.</p>
+        <p class="text-muted" style="line-height: 1.8;">
+          Founded on principles of unwavering integrity, deep neighborhood knowledge, and innovative marketing, we have helped thousands of clients locate their dream residences and high-performing real estate assets.
+        </p>
+        <div class="row mt-4">
+          <div class="col-6 col-sm-4 mb-3">
+            <div class="border rounded p-3 text-center bg-white shadow-xs">
+              <i class="fa-solid fa-award text-warning fa-2x mb-2"></i>
+              <div class="h4 font-weight-bold mb-0 text-primary">15+</div>
+              <small class="text-muted text-uppercase">Years Experience</small>
+            </div>
+          </div>
+          <div class="col-6 col-sm-4 mb-3">
+            <div class="border rounded p-3 text-center bg-white shadow-xs">
+              <i class="fa-solid fa-house-chimney-check text-success fa-2x mb-2"></i>
+              <div class="h4 font-weight-bold mb-0 text-primary">2,500+</div>
+              <small class="text-muted text-uppercase">Homes Sold</small>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 mb-3">
+            <div class="border rounded p-3 text-center bg-white shadow-xs">
+              <i class="fa-solid fa-handshake-simple text-primary fa-2x mb-2"></i>
+              <div class="h4 font-weight-bold mb-0 text-primary">99%</div>
+              <small class="text-muted text-uppercase">Client Rating</small>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4">
-          {% if mvp_realtors %}
-            {% for realtor in mvp_realtors %}
-            <div class="card">
-                <img class="card-img-top" src="{{ realtor.photo.url }}" alt="Seller of the month">
-                <div class="card-body">
-                  <h5 class="card-title">Seller Of The Month</h5>
-                  <h6 class="text-secondary">{{ realtor.name }}</h6>
-                  <p class="card-text">{{ realtor.description }}
-                  </p>
+      </div>
+
+      <div class="col-lg-5 col-md-12">
+        {% if mvp_realtors %}
+          {% for realtor in mvp_realtors %}
+            <div class="card seller-month-card">
+              <img class="card-img-top" src="{{ realtor.photo.url }}" alt="Seller of the month">
+              <div class="card-body text-center p-4">
+                <span class="badge badge-warning px-3 py-1 font-weight-bold text-uppercase mb-2" style="background: var(--accent); color: #10284e;">
+                  <i class="fa-solid fa-crown mr-1"></i> Seller of the Month
+                </span>
+                <h4 class="card-title font-weight-bold text-primary mb-1">{{ realtor.name }}</h4>
+                <p class="text-muted mb-3" style="font-size: 0.92rem;">{{ realtor.description }}</p>
+                <div class="d-flex justify-content-center">
+                  <a href="tel:{{ realtor.phone }}" class="btn btn-outline-primary btn-sm mr-2">
+                    <i class="fa-solid fa-phone mr-1"></i> Call
+                  </a>
+                  <a href="mailto:{{ realtor.email }}" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-envelope mr-1"></i> Email
+                  </a>
                 </div>
               </div>
-            {% endfor %}
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Work -->
-  <section id="work" class="bg-dark text-white text-center">
-    <h2 class="display-4">We Work For You</h2>
-    <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem velit aperiam, unde aliquid at similique!</h4>
-    <hr>
-    <a href="{% url 'listings' %}" class="btn btn-secondary text-white btn-lg">View Our Featured Listings</a>
-  </section>
-
-  <!-- Team -->
-  <section id="team" class="py-5">
-    <div class="container">
-      <h2 class="text-center">Our Team</h2>
-      <div class="row text-center">
-        {% if realtors %}
-          {% for realtor in realtors %}
-          <div class="col-md-4">
-              <img src="{{ realtor.photo.url }}" alt="" class="rounded-circle mb-3">
-              <h4>{{ realtor.name }}</h4>
-              <p class="text-success">
-                <i class="fas fa-award text-success mb-3"></i> Realtor</p>
-              <hr>
-              <p>
-                <i class="fas fa-phone"></i> {{ realtor.phone }}</p>
-              <p>
-                <i class="fas fa-envelope-open"></i> {{ realtor.email }}</p>
             </div>
           {% endfor %}
         {% else %}
-          <div class="col-md-12">
-            <p>No Realtors Available</p>
+          <div class="card shadow-sm border-0 rounded overflow-hidden">
+            <img src="{% static 'img/about.jpg' %}" alt="Our Headquarters" class="img-fluid">
           </div>
-        {% endif %}       
+        {% endif %}
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
+<!-- Call to Action Banner -->
+<section id="work" class="text-white text-center">
+  <div class="container position-relative" style="z-index: 2;">
+    <span class="badge px-3 py-2 font-weight-bold mb-3" style="background: rgba(255, 255, 255, 0.15); color: var(--accent); border-radius: 9999px;">
+      Dedicated to Excellence
+    </span>
+    <h2 class="display-4 font-weight-bold mb-3">We Work Exclusively For Your Ambitions</h2>
+    <p class="lead mx-auto mb-4" style="max-width: 700px; color: rgba(255, 255, 255, 0.85);">
+      Whether acquiring a family residence or divesting an estate, our seasoned brokers provide bespoke negotiation power and unmatched discretion.
+    </p>
+    <a href="{% url 'listings' %}" class="btn btn-secondary btn-lg px-4 py-3">
+      <i class="fa-solid fa-magnifying-glass mr-2"></i> View Our Featured Listings
+    </a>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge badge-warning text-uppercase px-3 py-2 font-weight-bold" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border-radius: 9999px;">
+        Leadership & Advisors
+      </span>
+      <h2 class="h1 mt-2 mb-2">Meet Our Expert Team</h2>
+      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Our licensed specialists are ready to guide you through market analysis, property inspections, and successful negotiations.</p>
+    </div>
+
+    <div class="row">
+      {% if realtors %}
+        {% for realtor in realtors %}
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="team-card text-center">
+              <div class="team-avatar-wrap">
+                <img src="{{ realtor.photo.url }}" alt="{{ realtor.name }}">
+                <div class="team-avatar-badge">
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </div>
+              <h4 class="font-weight-bold text-primary mb-1">{{ realtor.name }}</h4>
+              <span class="realtor-badge mb-3">
+                <i class="fa-solid fa-award"></i> Senior Realtor
+              </span>
+              <p class="text-muted small mb-3">{{ realtor.description | truncatewords:20 }}</p>
+              <div class="d-flex flex-column align-items-center">
+                <a href="tel:{{ realtor.phone }}" class="team-contact-link">
+                  <i class="fa-solid fa-phone"></i> {{ realtor.phone }}
+                </a>
+                <a href="mailto:{{ realtor.email }}" class="team-contact-link">
+                  <i class="fa-solid fa-envelope"></i> {{ realtor.email }}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-md-12">
+          <div class="empty-state text-center bg-white rounded shadow-sm">
+            <i class="fa-solid fa-users-slash empty-state-icon"></i>
+            <h4>No Realtors Listed Yet</h4>
+            <p class="text-muted">Our realtors directory will be updated soon. Please contact our support team in the meantime.</p>
+          </div>
+        </div>
+      {% endif %}       
+    </div>
+  </div>
+</section>
 {% endblock %}

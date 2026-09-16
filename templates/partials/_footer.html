@@ -1,37 +1,70 @@
- <!-- Footer -->
-<footer id="main-footer" class="py-5 bg-primary text-white">
+<!-- Footer -->
+<footer id="main-footer" class="py-5 text-white">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 mb-4 mb-md-0">
+      <!-- Column 1: Brand Overview -->
+      <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
         <h5 class="footer-heading">Real Estate</h5>
-        <p class="footer-text">Helping you find the perfect property with trusted realtors, honest pricing and a smooth experience from search to sale.</p>
+        <p class="footer-text mt-3 mb-3">Helping you find the perfect luxury and family properties with vetted realtors, transparent pricing, and end-to-end guidance from search to settlement.</p>
+        <div class="footer-badge-item">
+          <i class="fa-solid fa-shield-check text-warning mr-2"></i>
+          <span>100% Verified Property Listings</span>
+        </div>
       </div>
-      <div class="col-md-4 mb-4 mb-md-0">
+
+      <!-- Column 2: Quick Links -->
+      <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
         <h5 class="footer-heading">Quick Links</h5>
-        <ul class="footer-links">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'about' %}">About Us</a></li>
-          <li><a href="{% url 'listings' %}">Featured Listings</a></li>
-          <li><a href="{% url 'search' %}">Search Properties</a></li>
+        <ul class="footer-links mt-3">
+          <li><a href="{% url 'index' %}"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+          <li><a href="{% url 'about' %}"><i class="fa-solid fa-angle-right"></i> About Our Company</a></li>
+          <li><a href="{% url 'listings' %}"><i class="fa-solid fa-angle-right"></i> Featured Listings</a></li>
+          <li><a href="{% url 'search' %}"><i class="fa-solid fa-angle-right"></i> Property Search Engine</a></li>
         </ul>
       </div>
-      <div class="col-md-4">
-        <h5 class="footer-heading">Follow Us</h5>
-        <div class="social footer-social">
-          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+
+      <!-- Column 3: Contact & Social -->
+      <div class="col-lg-4 col-md-12 col-12">
+        <h5 class="footer-heading">Get in Touch</h5>
+        <div class="footer-contact-list mt-3 mb-3">
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-phone"></i>
+            <div>
+              <span class="d-block font-weight-bold text-white small text-uppercase">Direct Phone</span>
+              <a href="tel:+911234567890" class="text-white-50">+91 1234567890</a>
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <span class="d-block font-weight-bold text-white small text-uppercase">Email Inquiries</span>
+              <a href="mailto:contact@realestate.com" class="text-white-50">contact@realestate.com</a>
+            </div>
+          </div>
         </div>
-        <p class="mb-0 mt-3">
-          <i class="fas fa-phone"></i> +91 1234567890<br>
-          <i class="fas fa-envelope-open"></i> contact@realestate.com
-        </p>
+
+        <div class="footer-social-wrap mt-3">
+          <div class="footer-social">
+            <a href="#" aria-label="Twitter / X" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
       </div>
     </div>
+
     <hr class="footer-hr">
-    <p class="text-center mb-0 footer-copy">
-      Copyright &copy; <span class="year"></span> Real Estate. All Rights Reserved.
-    </p>
+
+    <!-- Bottom Bar -->
+    <div class="row align-items-center footer-bottom-bar text-center text-md-left">
+      <div class="col-md-6 col-12 mb-2 mb-md-0 footer-copy">
+        Copyright &copy; <span class="year"></span> Real Estate Portal. All Rights Reserved.
+      </div>
+      <div class="col-md-6 col-12 text-center text-md-right footer-trust-badges">
+        <span class="footer-trust-pill mr-2"><i class="fa-solid fa-lock text-warning mr-1"></i> SSL Secured</span>
+        <span class="footer-trust-pill"><i class="fa-solid fa-award text-warning mr-1"></i> Licensed Agency</span>
+      </div>
+    </div>
   </div>
 </footer>

@@ -1,17 +1,30 @@
 {% if messages %}
-  {% for message in messages %}
-    <div id="message" class="container">
-      <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-        <strong>
-          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            Error: 
-          {% else %}
-            {{ message.tags|title }}
-          {% endif %}
-        </strong>
-        {{ message }}
+  <div id="message">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible shadow-lg" role="alert">
+        {% if 'success' in message.tags %}
+          <i class="fa-solid fa-circle-check mr-2" style="font-size: 1.2rem; color: #10b981;"></i>
+        {% elif 'error' in message.tags or 'danger' in message.tags %}
+          <i class="fa-solid fa-circle-xmark mr-2" style="font-size: 1.2rem; color: #ef4444;"></i>
+        {% elif 'warning' in message.tags %}
+          <i class="fa-solid fa-triangle-exclamation mr-2" style="font-size: 1.2rem; color: #f59e0b;"></i>
+        {% else %}
+          <i class="fa-solid fa-circle-info mr-2" style="font-size: 1.2rem; color: #3b82f6;"></i>
+        {% endif %}
+        <div>
+          <strong>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              Error:
+            {% else %}
+              {{ message.tags|title }}:
+            {% endif %}
+          </strong>
+          <span>{{ message }}</span>
+        </div>
+        <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
 {% endif %}
