@@ -1,0 +1,46 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment files and secrets
+.env
+.env.*
+*.env
+!.env.example
+local_settings.py
+
+# Local SQLite databases
+db.sqlite3
+*.sqlite3
+*.db
+
+# Collected static files (generated during deployment build)
+staticfiles/
+
+# Logs
+*.log
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Editor and OS files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Testing and coverage
+.coverage
+htmlcov/
+.pytest_cache/
